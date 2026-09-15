@@ -53,6 +53,16 @@ jobs:
         with: { node-version: '22' }
       - run: npm install -g socket
 
+      - name: Install uv
+        # REQUIRED for Tier 1 on PyPI. Coana hard-fails before analysis with
+        # "Missing required external tools for the detected project
+        # ecosystems: PyPI - uv". The --reach-continue-on-* flags do NOT
+        # rescue this; a missing external tool is a precondition check, not
+        # an install or analysis error.
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: latest
+
       - name: Remove any retained facts file
         # .socket.facts.json is RETAINED between runs; a stale one feeds the
         # previous run's reachability results into this scan.
