@@ -1,0 +1,13 @@
+# Direct dependencies only. Socket resolves the transitive tree itself and
+# marks those artifacts non-direct, which is what Tier 2 needs.
+#
+# Do NOT commit uv.lock alongside this. uv.lock enumerates every wheel URL
+# per package, and Socket ingests each wheel as a SEPARATE artifact carrying
+# the full CVE set. That turned a 20-package project into 303 artifacts and
+# 1,763 CVE alerts, all flagged direct=True, and flattened Tier 2 to 0%.
+pyyaml==5.3.1
+flask==1.1.2
+requests==2.25.0
+pillow==8.1.0
+cryptography==3.2
+lxml==4.6.2
