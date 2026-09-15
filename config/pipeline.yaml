@@ -1,0 +1,4 @@
+source_url: https://settlement.contoso-eng.invalid/batches/latest
+window:
+  start: 2026-09-01
+  end: 2026-09-30

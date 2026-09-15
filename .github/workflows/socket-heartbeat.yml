@@ -1,0 +1,26 @@
+# Item 2: keep GitHub App full scans fresh. Push to the DEFAULT branch is the
+# only event trigger and needs no manifest change. See payments-api.
+name: socket-heartbeat
+on:
+  schedule:
+    - cron: '31 */4 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: socket-heartbeat
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DEMO_PUSH_TOKEN }}
+      - run: |
+          set -euo pipefail
+          git config user.name  "contoso-ci"
+          git config user.email "ci@contoso-eng.invalid"
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .socket-heartbeat
+          git add .socket-heartbeat
+          git commit -m "chore: scan heartbeat $(date -u +%H:%M)"
+          git push origin HEAD:main
